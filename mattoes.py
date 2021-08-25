@@ -12,32 +12,18 @@ import scipy.io as sio
 # FILENAME = "redbackgroundgreencircleTD"
 # mat = sio.loadmat('/media/sami/Samsung_T5/MPhil/Dataset/mat/' + FILENAME + '.mat')
 
-FILENAME = "TDONLYLABELS_ORIGINAL"
-mat = sio.loadmat('/media/sami/Samsung_T5/MPhil/Code/DeepGreen/greenhouseCode/recordings/realWorldScenes/HIE-2020_03_09_15_47_53_Test/' + FILENAME + '.mat')
+FILENAME = "other gestures"
+mat = sio.loadmat('/media/sami/Samsung_T5/MPhil/Code/DeepGreen/gestureDVS/classifiedGestures/' + FILENAME + '.mat')
 
 events = []
 
-# matX = mat['finalPredictedEvents'][0][0][0]
-# matY = mat['finalPredictedEvents'][0][0][1]
-# matP = mat['finalPredictedEvents'][0][0][2]
-# matTs = mat['finalPredictedEvents'][0][0][3]
-
-# matX = mat['NewTD'][0][0][0]
-# matY = mat['NewTD'][0][0][1]
-# matP = mat['NewTD'][0][0][2]
-# matTs = mat['NewTD'][0][0][3]
 
 matX =  mat['TD'][0][0][0]
 matY =  mat['TD'][0][0][1]
 matP =  mat['TD'][0][0][2]
 matTs = mat['TD'][0][0][3]
 
-# matX =  mat['TD0'][0][0][0]
-# matY =  mat['TD0'][0][0][1]
-# matP =  mat['TD0'][0][0][2]
-# matTs = mat['TD0'][0][0][3]
-
-matP[matP == -1] = 0
+# matP[matP == -1] = 0 # only if the polarity is -1 and 1
 
 nEvents = matX.shape[0]
 events = np.zeros((nEvents,4))
@@ -45,12 +31,12 @@ events = np.zeros((nEvents,4))
 events = np.concatenate((matTs,matX, matY, matP),axis=1).reshape((nEvents,4))
 
 # print(events.shape[0])
-        
+
 finalArray = np.asarray(events)
 finalArray[:,0] -= finalArray[0,0]
 
 ordering = "txyp"
-loris.write_events_to_file(finalArray, "/media/sami/Samsung_T5/MPhil/Dataset/es/" + FILENAME + "_Test.es",ordering)
+loris.write_events_to_file(finalArray, "/media/sami/Samsung_T5/MPhil/Dataset/es/" + FILENAME + ".es",ordering)
 print("File: " + FILENAME + "converted to .es")
 
 
